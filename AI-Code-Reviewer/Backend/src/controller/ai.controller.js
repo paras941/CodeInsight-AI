@@ -1,5 +1,5 @@
 const aiService = require("../services/ai.service");
-const { getDB } = require("../db");
+const connectDB = require("../db");
 
 module.exports.getReview = async (req, res) => {
   const code = req.body.code;
@@ -37,7 +37,12 @@ module.exports.getReview = async (req, res) => {
       responseText = responseText.replace(terminalErrorRegex, "").trim();
     }
 
-    const db = getDB();
+    let db;
+    try {
+      db = await connectDB();
+    } catch (dbError) {
+      console.error("Failed to connect to database for logging:", dbError.message);
+    }
     if (db) {
       try {
         await db.collection("reviews").insertOne({
@@ -67,10 +72,7 @@ module.exports.getReview = async (req, res) => {
 
 module.exports.getHistory = async (req, res) => {
   try {
-    const db = getDB();
-    if (!db) {
-      return res.status(500).json({ error: "Database not connected" });
-    }
+    const db = await connectDB();
     const reviews = await db.collection("reviews")
       .find({})
       .sort({ createdAt: -1 })
@@ -95,10 +97,7 @@ module.exports.getHistory = async (req, res) => {
 
 module.exports.clearHistory = async (req, res) => {
   try {
-    const db = getDB();
-    if (!db) {
-      return res.status(500).json({ error: "Database not connected" });
-    }
+    const db = await connectDB();
     await db.collection("reviews").deleteMany({});
     res.json({ message: "History cleared successfully" });
   } catch (error) {

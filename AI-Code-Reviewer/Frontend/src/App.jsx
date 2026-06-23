@@ -165,7 +165,7 @@ function App() {
         localStorage.setItem("codereview_history", JSON.stringify(updatedHistory));
         setSelectedHistoryId(newHistoryItem.id);
       }
-    } catch (error) {
+    } catch {
       setReview("❌ Error fetching review from AI Engine. Please check server logs and try again.");
       setTerminalError(null);
     }
@@ -174,7 +174,7 @@ function App() {
 
   const loadPreset = (presetCode) => {
     setCode(presetCode);
-    setTerminalError(null);``
+    setTerminalError(null);
     setSelectedHistoryId(null);
   };
 
