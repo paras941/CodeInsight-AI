@@ -44,9 +44,6 @@ node_modules/
 .env.backup
 .env.example
 
-# Keep env templates tracked
-!.env.example
-!.env.example.*
 
 # Sensitive files / keys / certificates
 *.pem
