@@ -174,7 +174,7 @@ function App() {
 
   const loadPreset = (presetCode) => {
     setCode(presetCode);
-    setTerminalError(null);
+    setTerminalError(null);``
     setSelectedHistoryId(null);
   };
 
